@@ -21,8 +21,9 @@ function displayStore() {
         for (let i = 0; i < response.length; i++) {
             newTable.push(response[i].id, response[i].ItemName, response[i].DepartmentName, response[i].Price, response[i].Stock)
         };
-        // console.log(newTable.toString()); not working???
-        console.log(newTable);
+        console.log(newTable.toString()); 
+        // says items.forEach error?
+        // console.log(newTable);
         buyStuff();
     });
 };
@@ -37,7 +38,10 @@ function buyStuff() {
         {
             name: "count",
             type: "input",
-            message: "How many would you like to purchase?"
+            message: "How many would you like to purchase?",
+            validate: function (value) {
+                if (isNaN(value) === false) { return true }
+            }
         }
     ]).then(function (response) {
         let countWanted = response.count;
