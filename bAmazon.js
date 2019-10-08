@@ -21,6 +21,7 @@ function displayStore() {
         for (let i = 0; i < response.length; i++) {
             newTable.push(response[i].id, response[i].ItemName, response[i].DepartmentName, response[i].Price, response[i].Stock)
         };
+        // console.log(newTable.toString()); not working???
         console.log(newTable);
         buyStuff();
     });
@@ -41,20 +42,18 @@ function buyStuff() {
     ]).then(function (response) {
         let countWanted = response.count;
         let itemWanted = response.item;
-        databaseBuy(countWanted, itemWanted);
+        databaseBuy(itemWanted, countWanted);
     });
 };
 
-function databaseBuy(requiredAmount, item) {
-    console.log(item)
-    console.log(requiredAmount)
-    connection.query("SELECT * FROM items WHERE ItemName = " + item, function (error, response) {
+function databaseBuy(item, requiredAmount) {
+    connection.query(`SELECT * FROM items WHERE ItemName = '${item}'`, function (error, response) {
         console.log(response)
         if (error) { throw error };
         if (requiredAmount <= response[0].Stock) {
             let price = response[0].Price * requiredAmount;
             console.log("Your total is " + price);
-            connection.query("UPDATE items SET Stock = Stock - " + requiredAmount + " WHERE ItemName = " + item);
+            connection.query(`UPDATE items SET Stock = Stock - ${requiredAmount} WHERE ItemName = '${item}'`);
         } else { console.log("We don't have that many in stock! Look again.") };
         connection.end();
     })
