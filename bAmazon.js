@@ -16,13 +16,13 @@ function displayStore() {
         // console.log(response)
         let newTable = new Table({
             head: ['id', 'ItemName', 'DepartmentName', 'Price', 'Stock'],
-            colWidths: [5, 20, 20, 20, 20]
+            colWidths: [10, 20, 20, 20, 20]
         });
         for (let i = 0; i < response.length; i++) {
             newTable.push(response[i].id, response[i].ItemName, response[i].DepartmentName, response[i].Price, response[i].Stock)
         };
         // console.log(newTable.toString()); not working???
-        console.log(newTable);
+        console.log(newTable.toString());
         buyStuff();
     });
 };
