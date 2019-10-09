@@ -1,6 +1,5 @@
 const mysql = require("mysql");
 const inquirer = require('inquirer');
-const Table = require('cli-table');
 
 const connection = mysql.createConnection({
     host: "localhost",
@@ -13,17 +12,7 @@ const connection = mysql.createConnection({
 function displayStore() {
     connection.query('SELECT * FROM items', function (err, response) {
         if (err) { throw err };
-        // console.log(response)
-        let newTable = new Table({
-            head: ['id', 'ItemName', 'DepartmentName', 'Price', 'Stock'],
-            colWidths: [5, 20, 20, 20, 20]
-        });
-        for (let i = 0; i < response.length; i++) {
-            newTable.push(response[i].id, response[i].ItemName, response[i].DepartmentName, response[i].Price, response[i].Stock)
-        };
-        console.log(newTable.toString()); 
-        // says items.forEach error?
-        // console.log(newTable);
+        console.table(response)
         buyStuff();
     });
 };
@@ -33,7 +22,10 @@ function buyStuff() {
         {
             name: "item",
             type: "input",
-            message: "What item would you like to purchase?"
+            message: "What is the id of the item you would like to purchase?",
+            validate: function (value) {
+                if (isNaN(value) === false) { return true }
+            }
         },
         {
             name: "count",
@@ -51,13 +43,16 @@ function buyStuff() {
 };
 
 function databaseBuy(item, requiredAmount) {
-    connection.query(`SELECT * FROM items WHERE ItemName = '${item}'`, function (error, response) {
-        console.log(response)
+    connection.query(`SELECT * FROM items WHERE id = '${item}'`, function (error, response) {
+        // console.log(response)
         if (error) { throw error };
         if (requiredAmount <= response[0].Stock) {
             let price = response[0].Price * requiredAmount;
             console.log("Your total is " + price);
-            connection.query(`UPDATE items SET Stock = Stock - ${requiredAmount} WHERE ItemName = '${item}'`);
+            connection.query(`UPDATE items SET Stock = Stock - ${requiredAmount} WHERE id = '${item}'`)
+        connection.query(`SELECT * FROM items WHERE id = '${item}'`, function (error, response) {
+            console.log("There are now " + response[0].Stock + " " + response[0].ItemName + " remaining.")
+        });
         } else { console.log("We don't have that many in stock! Look again.") };
         connection.end();
     })
