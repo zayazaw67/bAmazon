@@ -1,6 +1,5 @@
 const mysql = require("mysql");
 const inquirer = require('inquirer');
-const Table = require('cli-table');
 
 const connection = mysql.createConnection({
     host: "localhost",
@@ -12,17 +11,8 @@ const connection = mysql.createConnection({
 
 function displayStore() {
     connection.query('SELECT * FROM items', function (err, response) {
+        console.table(response)
         if (err) { throw err };
-        // console.log(response)
-        let newTable = new Table({
-            head: ['id', 'ItemName', 'DepartmentName', 'Price', 'Stock'],
-            colWidths: [10, 20, 20, 20, 20]
-        });
-        for (let i = 0; i < response.length; i++) {
-            newTable.push(response[i].id, response[i].ItemName, response[i].DepartmentName, response[i].Price, response[i].Stock)
-        };
-        // console.log(newTable.toString()); not working???
-        console.log(newTable.toString());
         buyStuff();
     });
 };
@@ -32,12 +22,15 @@ function buyStuff() {
         {
             name: "item",
             type: "input",
-            message: "What item would you like to purchase?"
+            message: "Enter the ID of the item you would like to purchase."
         },
         {
             name: "count",
             type: "input",
-            message: "How many would you like to purchase?"
+            message: "How many would you like to purchase?",
+            validate: function (value) {
+                if (isNaN(value) === false) { return true }
+            }
         }
     ]).then(function (response) {
         let countWanted = response.count;
