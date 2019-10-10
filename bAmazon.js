@@ -13,7 +13,6 @@ function displayStore() {
     connection.query('SELECT * FROM items', function (err, response) {
         console.table(response)
         if (err) { throw err };
-        console.table(response)
         buyStuff();
     });
 };
