@@ -37,14 +37,44 @@ function viewItems() {
 };
 
 function lowStock() {
-    connection.query("SELECT * FROM items", function(err, response){
+    connection.query("SELECT * FROM items", function (err, response) {
         // console.table(response)
         // console.log(response)
         for (let i = 0; i < response.length; i++) {
             if (response[i].Stock <= 5) {
-                console.table(response[i]) 
+                console.table(response[i])
             };
         };
         connection.end();
+    });
+};
+
+function addStock() {
+    inquirer.prompt([
+        {
+            message: "What is the id of the item you would like to add to?",
+            name: "add",
+            validate: function (value) {
+                if (isNaN(value) === false) { return true }
+            }
+        },
+        {
+            message: "How many would you like to add to the current stock?",
+            name: "addCount",
+            validate: function (value) {
+                if (isNaN(value) === false) { return true }
+            }
+        },
+    ]).then(function (response) {
+        connection.query("UPDATE items SET ? WHERE ?", [
+            {
+                stock: response.addCount
+            },
+            {
+                id: response.add
+            },
+        ]), function(err, data) {
+            console.log(data)
+        };
     });
 };
