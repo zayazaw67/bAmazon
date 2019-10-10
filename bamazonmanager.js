@@ -68,15 +68,36 @@ function addStock() {
             }
         },
     ]).then(function (response) {
-        connection.query("UPDATE items SET ? WHERE ?", [
-            {
-                stock: response.addCount
-            },
-            {
-                id: response.add
-            },
-        ]), function(err, data) {
-            console.log(data)
-        };
+        let countWanted = response.addCount;
+        let itemSelected = response.add;
+        databaseAdd(countWanted, itemSelected);
     });
 };
+
+function databaseAdd(item, amount) {
+    connection.query(`SELECT * FROM items WHERE id = '${item}'`, function (error, response) {
+        // console.log(response)
+        if (error) { throw error }
+        else {
+            connection.query(`UPDATE items SET Stock = Stock + ${amount} WHERE id = '${item}'`)
+            connection.query(`SELECT * FROM items WHERE id = '${item}'`, function (error, response) {
+                console.log("There are now " + response[0].Stock + " " + response[0].ItemName + ".")
+            });
+        };
+        connection.end();
+    })
+}
+
+
+//         connection.query("UPDATE items SET ? WHERE ?", [
+//             {
+//                 stock: response.addCount
+//             },
+//             {
+//                 id: response.add
+//             },
+//         ]), function(err, data) {
+//             console.log(data)
+//         };
+//     });
+// };
