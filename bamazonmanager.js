@@ -53,6 +53,7 @@ function lowStock() {
     });
 };
 
+// this can be improved with a callback? make console.table display before inquirer prompt so we can see the stock.
 function addStock() {
     inquirer.prompt([
         {
@@ -78,7 +79,7 @@ function addStock() {
 
 function databaseAdd(item, amount) {
     connection.query(`SELECT * FROM items WHERE id = '${item}'`, function (error, response) {
-        // console.log(response)
+        // console.table(response)
         if (error) { throw error }
         else {
             connection.query(`UPDATE items SET Stock = Stock + ${amount} WHERE id = '${item}'`)
