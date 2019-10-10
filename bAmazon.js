@@ -34,7 +34,7 @@ function buyStuff() {
             validate: function (value) {
                 if (isNaN(value) === false) { return true }
             }
-        }
+        },
     ]).then(function (response) {
         let countWanted = response.count;
         let itemWanted = response.item;
