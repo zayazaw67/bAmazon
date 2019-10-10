@@ -21,9 +21,13 @@ function managerTools() {
     ]).then(function (response) {
         console.log(response.managerAction)
         if (response.managerAction === "View items for sale") {
-            viewItems()
+            viewItems();
         } else if (response.managerAction === "View low stock items") {
-            lowStock()
+            lowStock();
+        } else if (response.managerAction === "Add to stock") {
+            addStock();
+        } else if (response.managerAction === "Add new item") {
+            addItem();
         };
     });
 };
@@ -86,6 +90,45 @@ function databaseAdd(item, amount) {
     })
 }
 
+function addItem() {
+    inquirer.prompt([
+        {
+            message: "What is the name of the new item to add?",
+            name: "newitem"
+        },
+        {
+            message: "What department should this item go to?",
+            name: "department"
+        },
+        {
+            message: "How much should this item be sold for?",
+            name: "price",
+            // probably won't work if there's a decimal?
+            validate: function (value) {
+                if (isNaN(value) === false) { return true }
+            }
+        },
+        {
+            message: "How many of this item do we have?",
+            name: "stock",
+            validate: function (value) {
+                if (isNaN(value) === false) { return true }
+            }
+        },
+    ]).then(function (response) {
+        connection.query("INSERT INTO items SET ?", {
+            itemName: response.newitem,
+            DepartmentName: response.department,
+            Price: response.price,
+            Stock: response.stock
+        }),
+        function(err, res) {
+            if (err) { throw err };
+            console.log("item added")
+        };
+        connection.end();
+    });
+}
 
 //         connection.query("UPDATE items SET ? WHERE ?", [
 //             {
