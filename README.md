@@ -36,4 +36,4 @@ On the manager side, the manager will be prompted several different actions to c
 2. Displaying the table before choosing what item to add stock to would be a nice quality of life improvement. Maybe this can be done with callbacks.
 
 # Final Thoughts
-Although this assignemnt was not that difficult, it really helps to develop our skills with Node.js, Javascript, and MySQL. Despite both activities being similar, and using very similar code, using it multiple times and being WET helps me as a student familiarize myself better with the concepts. 
+Although this assignment was not that difficult, it really helps to develop our skills with Node.js, Javascript, and MySQL. Despite both activities being similar, and using very similar code, using it multiple times and being WET helps me as a student familiarize myself better with the concepts. 
