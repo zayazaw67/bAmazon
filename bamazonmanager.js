@@ -21,9 +21,11 @@ function managerTools() {
     ]).then(function (response) {
         console.log(response.managerAction)
         if (response.managerAction === "View items for sale") {
-            viewItems()
+            viewItems();
         } else if (response.managerAction === "View low stock items") {
-            lowStock()
+            lowStock();
+        } else if (response.managerAction === "Add to stock") {
+            addStock();
         };
     });
 };
