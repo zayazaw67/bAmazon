@@ -32,16 +32,19 @@ function viewItems() {
     connection.query('SELECT * FROM items', function (err, response) {
         console.table(response)
         if (err) { throw err };
+        connection.end();
     });
 };
 
 function lowStock() {
     connection.query("SELECT * FROM items", function(err, response){
-        console.log(response)
+        // console.table(response)
+        // console.log(response)
         for (let i = 0; i < response.length; i++) {
-            if (response[i].stock <= 5) {
-                console.log(response[i]) else if 
+            if (response[i].Stock <= 5) {
+                console.table(response[i]) 
             };
         };
+        connection.end();
     });
 };
