@@ -50,7 +50,6 @@ function lowStock() {
     });
 };
 
-// this can be improved with a callback? make console.table display before inquirer prompt so we can see the stock.
 function addStock() {
     inquirer.prompt([
         {
